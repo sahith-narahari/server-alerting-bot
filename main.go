@@ -16,7 +16,7 @@ func init() {
 func main() {
 	token, exists := os.LookupEnv("BOT_TOKEN")
 	if exists {
-		fmt.Println("%s", token)
+		fmt.Printf("%s", token)
 	}
 
 	bot,err := tgbotapi.NewBotAPI(token)
