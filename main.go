@@ -30,6 +30,9 @@ func main() {
 	update.Timeout = 60
 
 	chanUpdates, err := bot.GetUpdatesChan(update)
+	if err != nil{
+		fmt.Printf("unable to get updates")
+	}
 
 	for updates := range chanUpdates {
 		if updates.Message == nil {
