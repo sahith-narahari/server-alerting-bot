@@ -6,6 +6,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"strconv"
 )
 
 func init() {
@@ -30,6 +31,9 @@ func main() {
 	update.Timeout = 60
 
 	chanUpdates, err := bot.GetUpdatesChan(update)
+	if err != nil{
+		fmt.Println("Error getting channel updates")
+	}
 
 	for updates := range chanUpdates {
 		if updates.Message == nil {
@@ -39,8 +43,12 @@ func main() {
 		if updates.Message.IsCommand() {
 			msg := tgbotapi.NewMessage(updates.Message.Chat.ID, "hello")
 			switch updates.Message.Command() {
-			case "hello":
-				msg.Text = "hello"
+			case "stats":
+				cpu, mem, disk := getStatsFromNode()
+				cpuStress := fmt.Sprintf("%f" , cpu)
+				memLoad := fmt.Sprintf("%f", mem)
+				diskCap := strconv.Itoa(disk)
+				msg.Text = cpuStress + "% cpu " + memLoad + "% mem " + diskCap + "% disk "
 			default:
 				msg.Text = "right command please"
 			}
